@@ -21,12 +21,14 @@
 	</target>
 	
 	<target name ="test" depends="test-compile">
-				<junit printsummary="yes" fork="yes" haltonfailure="yes">
+				<junit>
 					<classpath>
 						<pathelement location="${build-dir}"/>
 					</classpath>
 					<formatter type="plain"/>
-					<test name="kn156danilenko.UserTest"></test>
+					<batchtest fork="yes" todir="${build-dir}">
+					  							<fileset dir="${test-java-dir}" includes="**/*Test*.java" />
+					  						</batchtest>
 				</junit>
 			</target>
 	
