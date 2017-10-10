@@ -1,0 +1,5 @@
+Testsuite: kn156danilenko.UserTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0,016 sec
+
+Testcase: testGetFullName took 0 sec
+Testcase: testGetAge took 0 sec

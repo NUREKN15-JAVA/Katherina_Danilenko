@@ -1,0 +1,33 @@
+<project name = "usermanagement" basedir="." default="test">
+	
+	<property name="main-java-dir" value="${basedir}/src/main/java"></property>
+	<property name="test-java-dir" value="${basedir}/src/test/java"></property>
+	<property name="build-dir" value="${basedir}/bin"></property>
+	
+	<target name ="clean">
+		<delete dir="${build-dir}"/>
+		</target>
+		
+	<target name="init">
+	<mkdir dir="${build-dir}"/>
+		</target>
+	
+    <target name="compile" depends="init">
+	    <javac srcdir="${main-java-dir}" destdir="${build-dir}" includeantruntime="false"/>
+	</target>
+	
+	<target name="test-compile">
+		<javac srcdir="${test-java-dir}" destdir="${build-dir}" includeantruntime="false"/>
+	</target>
+	
+	<target name ="test" depends="test-compile">
+				<junit printsummary="yes" fork="yes" haltonfailure="yes">
+					<classpath>
+						<pathelement location="${build-dir}"/>
+					</classpath>
+					<formatter type="plain"/>
+					<test name="kn156danilenko.UserTest"></test>
+				</junit>
+			</target>
+	
+</project>
