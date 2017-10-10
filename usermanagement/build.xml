@@ -27,8 +27,8 @@
 					</classpath>
 					<formatter type="plain"/>
 					<batchtest fork="yes" todir="${build-dir}">
-					  							<fileset dir="${test-java-dir}" includes="**/*Test*.java" />
-					  						</batchtest>
+					  	<fileset dir="${test-java-dir}" includes="**/*Test*.java" />
+					</batchtest>
 				</junit>
 			</target>
 	
