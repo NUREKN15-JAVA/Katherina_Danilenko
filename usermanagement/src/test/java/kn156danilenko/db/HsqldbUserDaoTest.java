@@ -13,6 +13,15 @@ import kn156danilenko.User;
 
 public class HsqldbUserDaoTest extends DatabaseTestCase {
 
+	/**
+	 *  UPDATE_USER, DELETE_USER, FIND_USER Long constants which contain user's id 
+	 *  for testing methods from the class "HsqldbUserDao
+	 */ 
+	
+	private static final Long UPDATE_USER = 1000L;
+	private static final Long DELETE_USER = 1001L;
+	private static final Long FIND_USER = 1000L;
+	
 	private HsqldbUserDao dao;
 	private ConnectionFactory connectionFactory;
 
@@ -37,6 +46,41 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 		}
 	}
 
+	public void testUpdate() {
+		try {
+			User user = dao.find(UPDATE_USER);
+			user.setFirstName("John");
+			dao.update(user);
+			User updatedUser = dao.find(UPDATE_USER);
+			assertNotNull("User was not updated", updatedUser);
+			assertEquals("Difference between old and updated data of user", user.getFirstName(), updatedUser.getFirstName());
+		} catch (DatabaseExeption e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
+	}
+	public void testFindById() {
+		try {
+			User findedUser = dao.find(FIND_USER);
+			assertNotNull("There is no such user", findedUser);
+			assertEquals("Difference between user's id", FIND_USER, findedUser.getId());
+		} catch (DatabaseExeption e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
+	}
+	public void testDeleteUser() {
+		User user = null;
+		try {
+			user = dao.find(DELETE_USER);
+			dao.delete(user);
+			User deletedUser = dao.find(DELETE_USER);
+			assertNotNull("User was not deleted", deletedUser);
+		} catch (DatabaseExeption e) {
+			e.printStackTrace();
+			fail(e.toString());
+		}
+	}
 	public void testFindAll()
 	{
 		try {

@@ -14,6 +14,14 @@ import kn156danilenko.User;
 
  class HsqldbUserDao implements UserDao {
 
+	 	/**
+		 * DELETE_QUERY, UPDATE_QUERY, SELECT_USER_BY_ID, SELECT_ALL_QUERY, INSERT_QUERY String constants which contain sql request for updating, inserting,
+		 * deleting and selecting data from db table
+		 */
+	 
+	private static final String DELETE_QUERY = "DELETE FROM users WHERE id=?";
+	private static final String UPDATE_QUERY = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";
+	private static final String SELECT_USER_BY_ID = "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
 	private static final String SELECT_ALL_QUERY = "SELECT id, firstname,lastname,dateofbirth FROM users";
 	private static final String INSERT_QUERY = "INSERT INTO users (firstname, lastname, dateofbirth) VALUE(?, ?, ?)";
 	private ConnectionFactory connectionFactory;
@@ -64,18 +72,65 @@ import kn156danilenko.User;
 	}
 
 	public void update(User user) throws DatabaseExeption {
-		// TODO Auto-generated method stub
-
+		try {
+			Connection connection = connectionFactory.createConnection();
+			PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY);
+			statement.setString(1, user.getFirstName());
+			statement.setString(2, user.getLastName());
+			statement.setDate(3, new Date(user.getDateOfBirthd().getTime()));
+			statement.setLong(4, user.getId().longValue());
+			int n = statement.executeUpdate();
+			if (n != 1) {
+				throw new DatabaseExeption("Number of the updated rows: " + n);
+			}
+			statement.close();
+			connection.close();
+		} catch (DatabaseExeption e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DatabaseExeption(e);
+		}
 	}
 
 	public void delete(User user) throws DatabaseExeption {
-		// TODO Auto-generated method stub
-
+		try {
+			Connection connection = connectionFactory.createConnection();
+			PreparedStatement statement = connection.prepareStatement(DELETE_QUERY);
+			statement.setLong(1, user.getId().longValue());
+			int n = statement.executeUpdate();
+			if (n!=1) {
+				throw new DatabaseExeption("Number of the deleted rows: " + n);
+			}
+			statement.close();
+			connection.close();
+		} catch (DatabaseExeption e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DatabaseExeption(e);
+		}
 	}
 
 	public User find(Long id) throws DatabaseExeption {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User();
+		try {
+			Connection connection = connectionFactory.createConnection();
+			PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_ID);
+			statement.setLong(1, id.longValue());
+			ResultSet resultSet = statement.executeQuery();
+			while (resultSet.next()) {
+				user.setId(new Long(resultSet.getLong(1)));
+				user.setFirstName(resultSet.getString(2));
+				user.setLastName(resultSet.getString(3));
+				user.setDateOfBirthd(resultSet.getDate(4));
+			}
+			statement.close();
+			connection.close();
+			return user;
+		} catch (DatabaseExeption e) {
+			throw e;
+		} catch (SQLException e) {
+			throw new DatabaseExeption(e);
+		}
 	}
 
 	public Collection<User> findAll() throws DatabaseExeption {
