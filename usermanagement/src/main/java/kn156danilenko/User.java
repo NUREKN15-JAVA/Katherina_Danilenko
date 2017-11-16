@@ -7,7 +7,30 @@ public class User {
 	private Long id;
 	private String firstName;
 	private String lastName;
-	private Date dateOfBirthd;
+	private Date dateOfBirth;
+	
+	public User ()
+	{
+	}
+	
+	public User(User user) {
+		id = user.getId();
+		firstName = user.getFirstName();
+		lastName = user.getLastName();
+		dateOfBirth = user.getDateOfBirthd();
+	}
+	public User(Long id, String firstName, String lastName, Date dateOfBirth)
+	{
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+	}
+	public User(String firstName, String lastName, Date dateOfBirth) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -37,24 +60,53 @@ public class User {
 		}	
 	}
 	public Date getDateOfBirthd() {
-		return dateOfBirthd;
+		return dateOfBirth;
 	}
-	public void setDateOfBirthd(Date dateOfBirthd) {
-		this.dateOfBirthd = dateOfBirthd;
+	public void setDateOfBirthd(Date dateOfBirth) {
+		this.dateOfBirth= dateOfBirth;
 	}
-	public Object getFullName() {
+	public String getFullName() {
 		
-		return getLastName() + ", " + getFirstName();
+		if (getLastName() == null || getFirstName() == null){
+			throw new IllegalArgumentException("firstName or lastName is NULL");
+		}
+		return new StringBuilder(getLastName()).append(", ").append(getFirstName()).toString();
 	}
-	public int getAge() {
+	public long getAge() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		int currentYear = calendar.get(Calendar.YEAR);
+		long currentYear = calendar.get(Calendar.YEAR);
+		long currentDay = calendar.get(Calendar.DAY_OF_YEAR);
 		calendar.setTime(getDateOfBirthd());
-		int year = calendar.get(Calendar.YEAR);
-		return currentYear - year;
+		long yearOfBirth = calendar.get(Calendar.YEAR);
+		long dayOfBirth = calendar.get(Calendar.DAY_OF_YEAR);
+		long age = currentYear - yearOfBirth;
+		if (currentDay < dayOfBirth) {
+			return age - 1;
+		} else {
+			return age;
+		}
 	}
 	
+	@Override
+	  public int hashCode() {
+	    if (this.getId() == null) {
+	      return 0;
+	    }
+	    return this.getId().hashCode();
+	  }
 	
+	  @Override
+	  public boolean equals(Object obj) {
+		  if (obj == null) {
+			  return false;
+		  }
+		  if (this == obj) {
+			  return true;
+		  }
+		  if (this.getId() == null && ((User) obj).getId() == null) {
+			  return true;
+		  }
+		  return this.getId().equals(((User) obj).getId());
+}
 
 }
