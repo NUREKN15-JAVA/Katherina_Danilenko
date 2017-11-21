@@ -17,7 +17,6 @@ public class MockUserDao implements UserDao {
 		users.put(currentId, user);
 		return user;
 	}
-	
 
 	public User find(Long id) throws DatabaseExeption {
 		return (User) users.get(id);
@@ -27,9 +26,7 @@ public class MockUserDao implements UserDao {
 	Long currentId = user.getId();
 	users.remove(currentId);
 	users.put(currentId, user);
-
 	}
-
 	
 	public void delete(User user) throws DatabaseExeption {
 		Long currentId = user.getId();

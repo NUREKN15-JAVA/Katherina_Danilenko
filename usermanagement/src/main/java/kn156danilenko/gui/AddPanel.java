@@ -24,34 +24,31 @@ import kn156danilenko.util.Messages;
 
 public class AddPanel extends JPanel implements ActionListener {
 	
-	/*protected  MainFrame parent;
-	protected  JPanel buttonPanel;
+	protected  MainFrame parent;
+	private  JPanel buttonPanel;
 	private JPanel fieldPanel;
 	private JButton cancelButton;
-	protected JButton okButton;
+	private JButton okButton;
 	private JTextField dateOfBirthField;
 	private JTextField lastNameField;
 	private JTextField firstNameField;
 	private Color bgColor;
 
-	public AddPanel(MainFrame parent) {
-		this.parent = parent;
+	public AddPanel(MainFrame frame) {
+		parent = frame;
 		initialize();
 	}
-
 	private void initialize() {
 		this.setName("addPanel"); //$NON-NLS-1$
 		this.setLayout(new BorderLayout());
 		this.add(getFieldPanel(), BorderLayout.NORTH);
 		this.add(getButtonPanel(), BorderLayout.SOUTH);
 	}
-
 	private JPanel getButtonPanel() {
 		if(buttonPanel == null) {
 			buttonPanel = new JPanel();
 			buttonPanel.add(getOkButton(), null);
 			buttonPanel.add(getCancelButton(), null);
-
 		}
 		return buttonPanel;
 	}
@@ -127,8 +124,7 @@ public class AddPanel extends JPanel implements ActionListener {
             user.setLastName(getLastNameField().getText());
             DateFormat format = DateFormat.getDateInstance();
             try {
-            	Date date = format.parse(getDateOfBirthField().getText());
-                user.setDateOfBirthd(date);
+            	user.setDateOfBirthd(format.parse(getDateOfBirthField().getText()));
             } catch (ParseException e1) {
                 getDateOfBirthField().setBackground(Color.RED);
                 return;
@@ -163,8 +159,10 @@ public class AddPanel extends JPanel implements ActionListener {
 		
 		getDateOfBirthField().setText("");
 		getDateOfBirthField().setBackground(bgColor);
-	}*/
-	protected MainFrame parent;
+	}
+	
+	
+	/*protected MainFrame parent;
 	protected JPanel buttonPanel;
 	private JPanel fieldPanel;
 	private JButton cancelButton;
@@ -309,4 +307,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		getDateOfBirthField().setBackground(bgColor);
 		
 	}
+	/*
+	 * 
+	 */
 }

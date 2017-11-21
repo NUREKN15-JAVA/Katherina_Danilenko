@@ -35,14 +35,14 @@ public class MainFrameTest extends JFCTestCase {
 
     private Mock mockUserDao;
 
-    private List users;
+    private List<User> users;
     
     protected void setUp() throws Exception {
         super.setUp();
         try {
             Properties properties = new Properties();
             properties.setProperty("dao.factory", MockDaoFactory.class.getName());
-            DaoFactory.init(properties );
+            DaoFactory.init(properties);
             mockUserDao = ((MockDaoFactory) DaoFactory.getInstance()).getMockUserDao();
             User expectedUser = new User(new Long(1000), "George", "Bush", new Date());
             users = Collections.singletonList(expectedUser);
@@ -56,8 +56,8 @@ public class MainFrameTest extends JFCTestCase {
     }
 
     protected void tearDown() throws Exception {
-    	
         try {
+        	
             mainFrame.setVisible(false);
             getHelper().cleanUp(this);   
             super.tearDown();
@@ -89,6 +89,7 @@ public class MainFrameTest extends JFCTestCase {
         find(JButton.class, "detailsButton");        
     }
     
+    
     public void testAddUser() {
         try {
             String firstName = "John";
@@ -97,10 +98,10 @@ public class MainFrameTest extends JFCTestCase {
 
             User user = new User(firstName, lastName, now);
             
-            User expectedUser = new User(new Long(1), firstName, lastName, new Date());
+            User expectedUser = new User(new Long(1), firstName, lastName, now);
             mockUserDao.expectAndReturn("create", user, expectedUser);
             
-            ArrayList users = new ArrayList(this.users);
+            ArrayList<User> users = new ArrayList<>(this.users);
             users.add(expectedUser);
             mockUserDao.expectAndReturn("findAll", users);
            
@@ -121,7 +122,6 @@ public class MainFrameTest extends JFCTestCase {
             find(JPanel.class, "browsePanel");
             table = (JTable) find(JTable.class, "userTable");
             assertEquals(2, table.getRowCount());
-            
             mockUserDao.verify();
         } catch (Exception e) {
             fail(e.toString());
@@ -133,7 +133,7 @@ public class MainFrameTest extends JFCTestCase {
             String lastName = "Doe";
             Date now = new Date();
 
-            ArrayList users = new ArrayList(this.users);
+            ArrayList<User> users = new ArrayList<User>(this.users);
             mockUserDao.expectAndReturn("findAll", users);
             
             JTable table = (JTable) find(JTable.class, "userTable");
@@ -166,7 +166,7 @@ public class MainFrameTest extends JFCTestCase {
             Date now = new Date();
 
             User expectedUser = new User(new Long(1), firstName, lastName, new Date());
-            List users = new ArrayList(this.users);
+            List<User> users = new ArrayList<>(this.users);
             users.add(expectedUser);
             
             mockUserDao.expectAndReturn("findAll", users);
@@ -291,7 +291,7 @@ public class MainFrameTest extends JFCTestCase {
         DialogFinder dFinder = new DialogFinder(title);
         dialog = (JDialog) dFinder.find();
         assertNotNull("Could not find dialog '" + title + "'", dialog);
-        getHelper().disposeWindow( dialog, this );
+        getHelper().disposeWindow(dialog, this);
     }
 
     private void fillField(String firstName, String lastName, Date now) {

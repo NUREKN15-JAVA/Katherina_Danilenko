@@ -23,7 +23,7 @@ import kn156danilenko.User;
 	private static final String UPDATE_QUERY = "UPDATE users SET firstname=?, lastname=?, dateofbirth=? WHERE id=?";
 	private static final String SELECT_USER_BY_ID = "SELECT id, firstname, lastname, dateofbirth FROM users WHERE id=?";
 	private static final String SELECT_ALL_QUERY = "SELECT id, firstname, lastname, dateofbirth FROM users";
-	private static final String INSERT_QUERY = "INSERT INTO users(firstname, lastname, dateofbirth) VALUE(?, ?, ?)";
+	private static final String INSERT_QUERY = "INSERT INTO users(firstname,lastname,dateofbirth) VALUES(?,?,?)";
 	private ConnectionFactory connectionFactory;
 
 	public HsqldbUserDao() {
@@ -50,28 +50,26 @@ import kn156danilenko.User;
 			statement.setString(2, user.getLastName());
 			statement.setDate(3, new Date(user.getDateOfBirthd().getTime()));
 			int n = statement.executeUpdate();
-			if(n!=1){
+			if(n != 1){
 				throw new DatabaseExeption("Number of inserted rows" + n);
 			}
-			CallableStatement callableStatement=connection
-					.prepareCall("call IDENTITY()");
-			ResultSet keys=callableStatement.executeQuery();
-			User insertedUser=new User(user);
+			CallableStatement callableStatement = connection.prepareCall("call IDENTITY()");
+			ResultSet keys = callableStatement.executeQuery();
+			User insertedUser = new User(user);
 			if(keys.next()){
 				insertedUser.setId(keys.getLong(1));	
 			}
 			keys.close();
 			callableStatement.close();
 			connection.close();
+			statement.close();
 			return insertedUser;
 		}catch(DatabaseExeption e){
-			throw e;
-			
+			throw e;	
 		}catch(SQLException e){
 			throw new DatabaseExeption(e);
 		}
 	}
-
 	@Override
 	public User find(Long id) throws DatabaseExeption {		
 		try {

@@ -2,34 +2,109 @@
 	
 	<property name="main-java-dir" value="${basedir}/src/main/java"></property>
 	<property name="test-java-dir" value="${basedir}/src/test/java"></property>
-	<property name="build-dir" value="${basedir}/bin"></property>
+	
+	<property name="test-resources-dir" value="${basedir}/src/test/resources"></property>
+	<property name="main-webapp-dir" value="${basedir}/src/main/webapp"></property>
+	<property name="main-webapp-webinf-dir" value="${main-webapp-dir}/WEB-INF"></property>	
+	<property name="main-resources-dir" value="${basedir}/src/main/resources"></property>
+	
+	<property name="build-dir" value="${basedir}/target"></property>
+	<property name="classes-dir" value="${build-dir}/classes"></property>
+	<property name="test-result-dir" value="${build-dir}/test-result"></property>
+	<property name="lib-dir" value="${basedir}/lib"></property>
+
+	<property name="war-name" value="users"></property>
+	<property name="war-dir" value="${build-dir}/${war-name}"></property>
+	<property name="war-jsp-dir" value="${war-dir}"></property>
+	<property name="war-webinf-dir" value="${war-dir}/WEB-INF"></property>
+	<property name="war-lib-dir" value="${war-webinf-dir}/lib"></property>
+	<property name="war-classes-dir" value="${war-webinf-dir}/classes"></property>
 	
 	<target name ="clean">
-		<delete dir="${build-dir}"/>
+		<delete dir="${build-dir}" failonerror="no"/>
 		</target>
 		
 	<target name="init">
 	<mkdir dir="${build-dir}"/>
+		<mkdir dir="${classes-dir}"/>
 		</target>
 	
     <target name="compile" depends="init">
-	    <javac srcdir="${main-java-dir}" destdir="${build-dir}" includeantruntime="false"/>
+	    <javac srcdir="${main-java-dir}" destdir="${classes-dir}">
+    	<classpath>
+    		<fileset dir="${lib-dir}"/>
+    		</classpath>
+	    	</javac>
+    	<copy todir="${classes-dir}">
+    	<fileset dir="${main-resources-dir}">
+    		<include name="**/*.properties"/>
+    		<include name="**/*.xml"/>
+    		</fileset>
+    		</copy>
 	</target>
 	
-	<target name="test-compile">
-		<javac srcdir="${test-java-dir}" destdir="${build-dir}" includeantruntime="false"/>
+	<target name="war.exploded" depends="clean,compile">
+		<copy todir="${war-jsp-dir}">
+			<fileset dir="${main-webapp-dir}">
+			</fileset>
+		</copy>
+		
+		<copy todir="${war-lib-dir}">
+			<fileset dir="${lib-dir}">
+				<include name="hsqldb*.jar"/>
+				<include name="jstl*.jar"/>
+				<include name="standard*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${war-classes-dir}">
+			<fileset dir="${main-resources-dir}"/>
+		</copy>
+		
+		<copy todir="${war-classes-dir}">
+			<fileset dir="${classes-dir}"/>
+		</copy>
 	</target>
 	
-	<target name ="test" depends="test-compile">
-				<junit>
-					<classpath>
-						<pathelement location="${build-dir}"/>
-					</classpath>
+	<target name="war" depends="war.exploded">
+		<delete file="${build-dir}/${war-name}.war" failonerror="no"/>
+		<war destfile="${build-dir}/${war-name}.war" webxml="${main-webapp-webinf-dir}/web.xml">
+		<fileset dir="${war-jsp-dir}">
+			<exclude name="WEB-INF/*.*"/>
+			</fileset>
+			<classes dir="${war-classes-dir}"/>
+			<lib dir="${war-lib-dir}"/>
+			<webinf dir="${war-webinf-dir}">
+				<exclude name="web.xml"/>
+			</webinf>
+		</war>
+	</target>
+	
+	<target name="test-compile" depends="compile">
+			<javac srcdir="${test-java-dir}" destdir="${classes-dir}">
+	            <classpath>
+	                <fileset dir="${lib-dir}"/>
+	            </classpath>
+	        </javac>
+	        <copy todir="${classes-dir}">
+	            <fileset dir="${test-resources-dir}">
+	                <include name="**/*.properties"/>
+	                <include name="**/*.xml"/>   
+	            </fileset>
+	        </copy>      
+		</target>
+	
+	<target name="test" depends="test-compile">
+	        <mkdir dir="${test-result-dir}"/>      
+			<junit>
+				<classpath>
+					<pathelement location="${classes-dir}"/>
+	                <fileset dir="${lib-dir}"/>
+				</classpath>
 					<formatter type="plain"/>
-					<batchtest fork="yes" todir="${build-dir}">
+					<batchtest todir="${test-result-dir}" fork="yes">
 					  	<fileset dir="${test-java-dir}" includes="**/*Test*.java" />
 					</batchtest>
 				</junit>
 			</target>
-	
 </project>
