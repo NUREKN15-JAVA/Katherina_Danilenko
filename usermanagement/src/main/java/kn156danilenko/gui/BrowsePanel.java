@@ -269,10 +269,8 @@ import kn156danilenko.util.Messages;
 			}		
 			return userTable;
 		}
-
 		public void initTable() {
 			UserTableModel model;
-			
 			try {
 				model = new UserTableModel(parent.getDao().findAll());
 			} catch (DatabaseExeption e) {
@@ -281,8 +279,6 @@ import kn156danilenko.util.Messages;
 			}
 			getUserTable().setModel(model);
 		}
-
-		
 		 public void actionPerformed(ActionEvent e) {
 		        String actionCommand = e.getActionCommand();
 		        if ("add".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
@@ -329,7 +325,6 @@ import kn156danilenko.util.Messages;
 		            this.setVisible(false);
 		            parent.showDetailsPanel(user);
 		        }
-
 		    }
 	}
 

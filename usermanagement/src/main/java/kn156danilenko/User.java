@@ -11,6 +11,7 @@ public class User {
 	
 	public User ()
 	{
+		super();
 	}
 	
 	public User(User user) {
@@ -21,12 +22,14 @@ public class User {
 	}
 	public User(Long id, String firstName, String lastName, Date dateOfBirth)
 	{
+		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
 	}
 	public User(String firstName, String lastName, Date dateOfBirth) {
+		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;

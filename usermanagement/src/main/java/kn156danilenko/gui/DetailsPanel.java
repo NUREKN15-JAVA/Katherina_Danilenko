@@ -106,7 +106,6 @@ package kn156danilenko.gui;
 		}
 
 		  public void setUser(User user) {
-		        DateFormat format = DateFormat.getDateInstance();
 		        this.user = user;
 		        getFirstNameField().setText(user.getFirstName());
 		        getLastNameField().setText(user.getLastName());

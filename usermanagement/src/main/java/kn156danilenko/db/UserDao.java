@@ -48,5 +48,4 @@ public interface UserDao {
 	 * @param connectionFactory the connection factory to use
 	 */
 	void setConnectionFactory(ConnectionFactory connectionFactory);
-	
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.4"
+	xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xml">
+	
+	<servlet>
+	<servlet-name>Browse Servlet</servlet-name>
+	<servlet-class>kn156danilenko.web.BrowseServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Add Servlet</servlet-name>
+	<servlet-class>kn156danilenko.web.AddServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Edit Servlet</servlet-name>
+	<servlet-class>kn156danilenko.web.EditServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Delete Servlet</servlet-name>
+	<servlet-class>kn156danilenko.web.DeleteServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+	<servlet-name>Details Servlet</servlet-name>
+	<servlet-class>kn156danilenko.web.DetailsServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+	<servlet-name>Browse Servlet</servlet-name>
+	<url-pattern>/browse</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Add Servlet</servlet-name>
+	<url-pattern>/add</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Edit Servlet</servlet-name>
+	<url-pattern>/edit</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Delete Servlet</servlet-name>
+	<url-pattern>/delete</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+	<servlet-name>Details Servlet</servlet-name>
+	<url-pattern>/details</url-pattern>
+	</servlet-mapping>
+		
+</web-app>
+	
