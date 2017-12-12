@@ -48,4 +48,6 @@ public interface UserDao {
 	 * @param connectionFactory the connection factory to use
 	 */
 	void setConnectionFactory(ConnectionFactory connectionFactory);
+	
+	Collection<User> find(String firstName, String lastName) throws DatabaseExeption;
 }
